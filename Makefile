@@ -16,5 +16,4 @@ run:
 	./$(TARGET) $(LEVEL)
 
 clean:
-	@rm -f $(TARGET) src/*.o
-	@rm -f *.o
+	@rm -f $(TARGET) *.o src/*.o
