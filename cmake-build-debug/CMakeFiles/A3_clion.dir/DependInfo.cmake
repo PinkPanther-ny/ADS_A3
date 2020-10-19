@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/EVERYTHING/2020_s2/COMP20003/A3/peg_solitaire.c" "D:/EVERYTHING/2020_s2/COMP20003/A3/cmake-build-debug/CMakeFiles/A3_clion.dir/peg_solitaire.c.obj"
-  "D:/EVERYTHING/2020_s2/COMP20003/A3/src/ai.c" "D:/EVERYTHING/2020_s2/COMP20003/A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/ai.c.obj"
-  "D:/EVERYTHING/2020_s2/COMP20003/A3/src/hashtable.c" "D:/EVERYTHING/2020_s2/COMP20003/A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/hashtable.c.obj"
-  "D:/EVERYTHING/2020_s2/COMP20003/A3/src/stack.c" "D:/EVERYTHING/2020_s2/COMP20003/A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/stack.c.obj"
-  "D:/EVERYTHING/2020_s2/COMP20003/A3/src/utils.c" "D:/EVERYTHING/2020_s2/COMP20003/A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/utils.c.obj"
+  "/home/alvin/Desktop/myRepo/ADS_A3/peg_solitaire.c" "/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir/peg_solitaire.c.o"
+  "/home/alvin/Desktop/myRepo/ADS_A3/src/ai.c" "/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/ai.c.o"
+  "/home/alvin/Desktop/myRepo/ADS_A3/src/hashtable.c" "/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/hashtable.c.o"
+  "/home/alvin/Desktop/myRepo/ADS_A3/src/stack.c" "/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/stack.c.o"
+  "/home/alvin/Desktop/myRepo/ADS_A3/src/utils.c" "/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir/src/utils.c.o"
   )
-set(CMAKE_C_COMPILER_ID "MSVC")
+set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH

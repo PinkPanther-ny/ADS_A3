@@ -11,3 +11,4 @@ all: $(SRC)
 
 clean:
 	rm -f $(TARGET) src/*.o
+	rm -f $(TARGET) *.o
