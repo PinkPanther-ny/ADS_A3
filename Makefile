@@ -13,7 +13,7 @@ build: $(SRC)
 	$(CC) -o $(TARGET) $(SRC) $(CPPFLAGS)
 
 run:
-	./$(TARGET) $(LEVEL)
+	./$(TARGET) $(LEVEL) AI 1000000 play_solutions
 
 clean:
 	@rm -f $(TARGET) *.o src/*.o

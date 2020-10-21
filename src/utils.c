@@ -315,6 +315,7 @@ void print_solution(){
 void play_solution(){
 	for(int i=0; i <= solution_size; i++){
 		drawBoard(&(solution[i]));
+		// In micro seconds, half second per update.
 		usleep(500000);
 		
 		if( i < solution_size){
