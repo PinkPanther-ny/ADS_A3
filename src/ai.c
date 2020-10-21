@@ -49,9 +49,10 @@ node_t* applyAction(node_t* n, position_s* selected_peg, move_t action ){
     node_t* new_node = NULL;
 
 	//FILL IN MISSING CODE
-	
+	new_node = create_init_node(&(n->state));
+	copy_state( &(new_node->state),  &(n->state));
     execute_move_t( &(new_node->state), &(new_node->state.cursor), action );
-	
+
 	return new_node;
 
 }
@@ -73,6 +74,60 @@ void find_solution( state_t* init_state  ){
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-	
+
 	//FILL IN THE GRAPH ALGORITHM
+
+    /* stackPush(n) */
+    stack_push(n);
+
+    /* remainingP egs ← numPegs(n) */
+    int remainPeg = num_pegs(init_state);
+
+    /* while stack != empty do */
+    while (!is_stack_empty()){
+        n = stack_top();
+        stack_pop();
+        expanded_nodes++;
+
+        if(num_pegs(&(n->state)) < remainPeg){
+            save_solution(n);
+            remainPeg = num_pegs(&(n->state));
+        }
+
+        position_s curPos;
+        for(int x=0;x<SIZE;x++){
+            curPos.x = x;
+            for(int y=0;y<SIZE;y++){
+                curPos.y = y;
+
+                for(int jump=left;jump<=down;jump++){
+
+                    if(can_apply(&(n->state), &curPos, jump)){
+                        n = applyAction(n, &curPos, jump);
+                        generated_nodes++;
+
+                        if(won(&(n->state))){
+                            save_solution(n);
+                            remainPeg = num_pegs(&(n->state));
+                            return;
+                        }
+
+                        if(!ht_contains(&table, &(n->state.field) )){
+                            stack_push(n);
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        if(expanded_nodes >= budget){
+            return;
+        }
+
+
+    }
+
+
 }

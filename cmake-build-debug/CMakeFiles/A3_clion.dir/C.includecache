@@ -6,13 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/alvin/Desktop/myRepo/ADS_A3/src/layouts.h
-
-/home/alvin/Desktop/myRepo/ADS_A3/src/utils.c
+/home/alvin/Desktop/myRepo/ADS_A3/src/ai.c
+time.h
+-
+stdlib.h
+-
+limits.h
+-
+math.h
+-
+ai.h
+/home/alvin/Desktop/myRepo/ADS_A3/src/ai.h
 utils.h
 /home/alvin/Desktop/myRepo/ADS_A3/src/utils.h
-layouts.h
-/home/alvin/Desktop/myRepo/ADS_A3/src/layouts.h
+hashtable.h
+/home/alvin/Desktop/myRepo/ADS_A3/src/hashtable.h
+stack.h
+/home/alvin/Desktop/myRepo/ADS_A3/src/stack.h
+
+/home/alvin/Desktop/myRepo/ADS_A3/src/ai.h
+stdint.h
+-
+unistd.h
+-
+utils.h
+/home/alvin/Desktop/myRepo/ADS_A3/src/utils.h
+
+/home/alvin/Desktop/myRepo/ADS_A3/src/hashtable.h
+stdbool.h
+-
+stddef.h
+-
+
+/home/alvin/Desktop/myRepo/ADS_A3/src/stack.h
+utils.h
+/home/alvin/Desktop/myRepo/ADS_A3/src/utils.h
 
 /home/alvin/Desktop/myRepo/ADS_A3/src/utils.h
 stdio.h
