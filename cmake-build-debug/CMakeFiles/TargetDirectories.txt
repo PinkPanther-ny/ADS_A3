@@ -1,3 +1,0 @@
-/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/alvin/Desktop/myRepo/ADS_A3/cmake-build-debug/CMakeFiles/A3_clion.dir

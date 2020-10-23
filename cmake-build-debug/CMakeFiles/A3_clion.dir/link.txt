@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/A3_clion.dir/peg_solitaire.c.o CMakeFiles/A3_clion.dir/src/ai.c.o CMakeFiles/A3_clion.dir/src/hashtable.c.o CMakeFiles/A3_clion.dir/src/stack.c.o CMakeFiles/A3_clion.dir/src/utils.c.o  -o A3_clion 
