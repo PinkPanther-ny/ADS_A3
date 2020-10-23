@@ -15,6 +15,8 @@
 #define SIZE 9
 #define _XOPEN_SOURCE 500
 
+#define PLAY_SOLUTION_SPEED 300000
+
 /**
  * Data structure containing the information about the game state
  */

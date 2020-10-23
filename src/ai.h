@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "utils.h"
 
+#define DEBUG 0
 void initialize_ai();
 
 void find_solution( state_t* init_state );

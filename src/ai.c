@@ -49,10 +49,17 @@ node_t* applyAction(node_t* n, position_s* selected_peg, move_t action ){
     node_t* new_node = NULL;
 
 	//FILL IN MISSING CODE
-	new_node = create_init_node(&(n->state));
-	copy_state( &(new_node->state),  &(n->state));
-    execute_move_t( &(new_node->state), &(new_node->state.cursor), action );
 
+	new_node = create_init_node(&(n->state));
+
+    new_node->depth = n->depth + 1;
+    new_node->parent = n;
+
+    new_node->state.cursor.x = (*selected_peg).x;
+    new_node->state.cursor.y = (*selected_peg).y;
+
+    execute_move_t( &(new_node->state), selected_peg, action );
+    new_node->move = action;
 	return new_node;
 
 }
@@ -74,14 +81,15 @@ void find_solution( state_t* init_state  ){
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-
+    node_t* new_node;
 	//FILL IN THE GRAPH ALGORITHM
 
     /* stackPush(n) */
     stack_push(n);
+    ht_insert(&table, &n->state.field, n);
 
-    /* remainingP egs ← numPegs(n) */
-    int remainPeg = num_pegs(init_state);
+    /* remainingPegs ← numPegs(n) */
+    int remainPeg = num_pegs(&n->state);
 
     /* while stack != empty do */
     while (!is_stack_empty()){
@@ -89,32 +97,44 @@ void find_solution( state_t* init_state  ){
         stack_pop();
         expanded_nodes++;
 
-        if(num_pegs(&(n->state)) < remainPeg){
+        if(num_pegs(&n->state) < remainPeg){
             save_solution(n);
-            remainPeg = num_pegs(&(n->state));
+            remainPeg = num_pegs(&n->state);
+            if(DEBUG){
+                printf("Better solution found, %d pegs remain.\n", remainPeg);
+            }
         }
 
         position_s curPos;
-        for(int x=0;x<SIZE;x++){
-            curPos.x = x;
-            for(int y=0;y<SIZE;y++){
-                curPos.y = y;
+        for(curPos.x=0;curPos.x<SIZE;curPos.x++){
+            for(curPos.y=0;curPos.y<SIZE;curPos.y++){
+
+                // Optimized checking condition, gain 17% more performance
+                if(n->state.field[ curPos.x ][ curPos.y ] !='o'){
+                    continue;
+                }
 
                 for(int jump=left;jump<=down;jump++){
 
-                    if(can_apply(&(n->state), &curPos, jump)){
-                        n = applyAction(n, &curPos, jump);
+                    if(can_apply(&n->state, &curPos, jump)){
+                        new_node = applyAction(n, &curPos, jump);
                         generated_nodes++;
 
-                        if(won(&(n->state))){
-                            save_solution(n);
-                            remainPeg = num_pegs(&(n->state));
+                        if(won( &new_node->state )){
+
+                            if(DEBUG) {
+                                remainPeg = num_pegs(&new_node->state);
+                                printf("Better solution found, %d pegs remain.\n", remainPeg);
+                            }
+                            save_solution(new_node);
                             return;
                         }
 
-                        if(!ht_contains(&table, &(n->state.field) )){
-                            stack_push(n);
+                        if(!ht_contains( &table, new_node->state.field )){
+                            stack_push(new_node);
+                            ht_insert( &table, new_node->state.field, new_node );
                         }
+
                     }
 
                 }

@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "layouts.h"
+#include "../../../Desktop/myRepo/ADS_A3/src/utils.h"
 
 void execute_move_t(state_t* state, position_s* selected_peg, move_t jump) {
     int8_t x = selected_peg->x;
@@ -316,7 +317,7 @@ void play_solution(){
 	for(int i=0; i <= solution_size; i++){
 		drawBoard(&(solution[i]));
 		// In micro seconds, half second per update.
-		usleep(500000);
+		usleep(PLAY_SOLUTION_SPEED);
 		
 		if( i < solution_size){
 			//Reverse action
@@ -340,7 +341,7 @@ void play_solution(){
 				}
 			solution[i].selected = true;
 			drawBoard(&(solution[i]));
-			usleep(500000);
+			usleep(PLAY_SOLUTION_SPEED);
 		}
 	}
 }
