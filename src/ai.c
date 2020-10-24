@@ -76,6 +76,7 @@ void find_solution( state_t* init_state  ){
 	// Specify the size of the keys and values you want to store once 
 	ht_setup( &table, sizeof(int8_t) * SIZE * SIZE, sizeof(int8_t) * SIZE * SIZE, 16769023);
 
+
 	// Initialize Stack
 	initialize_stack();
 
@@ -91,6 +92,7 @@ void find_solution( state_t* init_state  ){
     /* remainingPegs ← numPegs(n) */
     int remainPeg = num_pegs(&n->state);
 
+    clock_t start = clock();
     /* while stack != empty do */
     while (!is_stack_empty()){
         n = stack_top();
@@ -100,9 +102,7 @@ void find_solution( state_t* init_state  ){
         if(num_pegs(&n->state) < remainPeg){
             save_solution(n);
             remainPeg = num_pegs(&n->state);
-            if(DEBUG){
-                printf("Better solution found, %d pegs remain.\n", remainPeg);
-            }
+            if(DEBUG){ printf(DEBUG_LOG); }
         }
 
         position_s curPos;
@@ -121,16 +121,24 @@ void find_solution( state_t* init_state  ){
                         generated_nodes++;
 
                         if(won( &new_node->state )){
-
-                            if(DEBUG) {
-                                remainPeg = num_pegs(&new_node->state);
-                                printf("Better solution found, %d pegs remain.\n", remainPeg);
-                            }
+                            remainPeg = num_pegs(&new_node->state);
                             save_solution(new_node);
+
+                            if(DEBUG){ printf(DEBUG_LOG); }
                             return;
                         }
+                        /*
+                        bool isDuplicate = false;
+                        for(int i=0;i<4;i++){
+                            rotateBoard(&new_node->state);
+                            if(ht_contains( &table, new_node->state.field )){
+                                isDuplicate = true;
+                                break;
+                            }
+                        }*/
 
                         if(!ht_contains( &table, new_node->state.field )){
+                            //if(!isDuplicate){
                             stack_push(new_node);
                             ht_insert( &table, new_node->state.field, new_node );
                         }
@@ -145,6 +153,7 @@ void find_solution( state_t* init_state  ){
         if(expanded_nodes >= budget){
             return;
         }
+
 
 
     }

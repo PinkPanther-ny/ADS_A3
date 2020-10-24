@@ -1,6 +1,5 @@
 #include "utils.h"
 #include "layouts.h"
-#include "../../../Desktop/myRepo/ADS_A3/src/utils.h"
 
 void execute_move_t(state_t* state, position_s* selected_peg, move_t jump) {
     int8_t x = selected_peg->x;

@@ -5,7 +5,10 @@
 #include <unistd.h>
 #include "utils.h"
 
-#define DEBUG 0
+#define DEBUG 1
+#define DEBUG_LOG "Better solution found, %3d pegs remain, %7d node expanded (%f SECS).\n", \
+                    remainPeg, expanded_nodes, (double)(clock()-start)/CLOCKS_PER_SEC
+
 void initialize_ai();
 
 void find_solution( state_t* init_state );
