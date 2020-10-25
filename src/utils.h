@@ -70,10 +70,6 @@ bool ai_run; //Run AI
 bool show_solution; //Play solution found by AI algorithm
 int budget; // budget for expanded nodes
 
-node_t * all[10000000];
-int count_all;
-
-
 /**
  *  Useful functions for AI algorithm
  */
@@ -112,5 +108,10 @@ char* action_cstr(move_t move);
 void print_solution();
 void play_solution();
 
+
+#define MAX_EXPENDED_NODES 5000000
+node_t * all_allocated_nodes[MAX_EXPENDED_NODES];
+int count_allocated_nodes;
+void free_all_nodes();
 
 #endif

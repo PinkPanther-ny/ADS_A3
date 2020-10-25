@@ -42,7 +42,7 @@ node_t* create_init_node( state_t* init_state ){
 	new_n->depth = 0;
 	copy_state(&(new_n->state), init_state);
 
-	all[count_all++] = new_n;
+    all_allocated_nodes[count_allocated_nodes++] = new_n;
 
 	return new_n;
 }
@@ -90,9 +90,9 @@ void find_solution( state_t* init_state  ){
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-	node_t *kk = n;
+	node_t *ini_node = n;
     node_t* new_node = NULL;
-    count_all = 0;
+    count_allocated_nodes = 0;
 	//FILL IN THE GRAPH ALGORITHM
 
     /* stackPush(n) */
@@ -139,10 +139,8 @@ void find_solution( state_t* init_state  ){
                             // Game over
                             if(DEBUG){ printf(DEBUG_LOG); }
 
-                            for(int i=0;i<count_all;i++) {
-                                free(all[i]);
-                            }
-                            free(kk);
+                            free(ini_node);
+                            free_all_nodes();
                             /*
                             while (!is_stack_empty()){
                                 free(stack_top());
@@ -167,22 +165,24 @@ void find_solution( state_t* init_state  ){
 
             }
         }
-
+        /*
         if(isDead){
             //free(n);
-        }
+        }*/
 
         if(expanded_nodes >= budget){
-            return;
+            break;
         }
 
     }
-    /*
+
+
+    free(ini_node);
+    free_all_nodes();
     ht_destroy(&table);
-    free_stack();*/
 }
 
-
+/*
 void free_node(node_t* node){
     node_t* tmp;
     int a=0;
@@ -193,5 +193,4 @@ void free_node(node_t* node){
         node = node->parent;
         free(tmp);
     }
-
-}
+}*/
