@@ -109,7 +109,18 @@ int main(int argc, char *argv[]) {
 
 			
 		if( show_solution ) play_solution();
-
+/*
+        char * fn="/home/alvin/Desktop/myRepo/ADS_A3/output.txt";
+        FILE * fp = fopen(fn, "w+");
+        assert(fp!=NULL);
+        fprintf(fp, "STATS: \n");
+        fprintf(fp, "\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
+        fprintf(fp, "\tSolution Length: %d\n", solution_size);
+        fprintf(fp, "\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
+        fprintf(fp, "\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
+        fprintf(fp, "\tTime (seconds): %f\n", cpu_time_used );
+        fclose(fp);
+*/
 		printf("SOLUTION:                               \n");
 		print_solution( );
 
@@ -119,21 +130,11 @@ int main(int argc, char *argv[]) {
 		printf("\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
 		printf("\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
 		printf("\tTime (seconds): %f\n", cpu_time_used );
-#include <stdio.h>
-#include <stdlib.h>
-        char * ff="output.txt";
-        FILE * fp = fopen(ff, "w");
-        assert(fp!=NULL);
-        fprintf(fp, "STATS: \n");
-        fprintf(fp, "\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
-        fprintf(fp, "\tSolution Length: %d\n", solution_size);
-        fprintf(fp, "\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
-        fprintf(fp, "\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
-        fprintf(fp, "\tTime (seconds): %f\n", cpu_time_used );
-        fclose(fp);
 
 		setBufferedInput(true);
 		printf("\033[?25h\033[0m");
+
+
 		return EXIT_SUCCESS;
 	}else{
 

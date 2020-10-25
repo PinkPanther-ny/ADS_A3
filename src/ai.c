@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <math.h>
+#include <assert.h>
 
 #include "ai.h"
 #include "utils.h"
@@ -23,10 +24,12 @@ void copy_state(state_t* dst, state_t* src){
 */
 void save_solution( node_t* solution_node ){
 	node_t* n = solution_node;
+
 	while( n->parent != NULL ){
 		copy_state( &(solution[n->depth]), &(n->state) );
 		solution_moves[n->depth-1] = n->move;
 
+		//free state before go to parent
 		n = n->parent;
 	}
 	solution_size = solution_node->depth;
@@ -38,6 +41,9 @@ node_t* create_init_node( state_t* init_state ){
 	new_n->parent = NULL;	
 	new_n->depth = 0;
 	copy_state(&(new_n->state), init_state);
+
+	all[count_all++] = new_n;
+
 	return new_n;
 }
 
@@ -72,6 +78,8 @@ void find_solution( state_t* init_state  ){
 
 	HashTable table;
 
+
+
 	// Choose initial capacity of PRIME NUMBER 
 	// Specify the size of the keys and values you want to store once 
 	ht_setup( &table, sizeof(int8_t) * SIZE * SIZE, sizeof(int8_t) * SIZE * SIZE, 16769023);
@@ -82,7 +90,9 @@ void find_solution( state_t* init_state  ){
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-    node_t* new_node;
+	node_t *kk = n;
+    node_t* new_node = NULL;
+    count_all = 0;
 	//FILL IN THE GRAPH ALGORITHM
 
     /* stackPush(n) */
@@ -92,7 +102,9 @@ void find_solution( state_t* init_state  ){
     /* remainingPegs ← numPegs(n) */
     int remainPeg = num_pegs(&n->state);
 
+    // debug use.
     clock_t start = clock();
+
     /* while stack != empty do */
     while (!is_stack_empty()){
         n = stack_top();
@@ -106,17 +118,17 @@ void find_solution( state_t* init_state  ){
         }
 
         position_s curPos;
+        bool isDead = true;
         for(curPos.x=0;curPos.x<SIZE;curPos.x++){
             for(curPos.y=0;curPos.y<SIZE;curPos.y++){
-
                 // Optimized checking condition, gain 17% more performance
                 if(n->state.field[ curPos.x ][ curPos.y ] !='o'){
                     continue;
                 }
-
                 for(int jump=left;jump<=down;jump++){
 
                     if(can_apply(&n->state, &curPos, jump)){
+                        isDead = false;
                         new_node = applyAction(n, &curPos, jump);
                         generated_nodes++;
 
@@ -124,21 +136,27 @@ void find_solution( state_t* init_state  ){
                             remainPeg = num_pegs(&new_node->state);
                             save_solution(new_node);
 
+                            // Game over
                             if(DEBUG){ printf(DEBUG_LOG); }
+
+                            for(int i=0;i<count_all;i++) {
+                                free(all[i]);
+                            }
+                            free(kk);
+                            /*
+                            while (!is_stack_empty()){
+                                free(stack_top());
+                                stack_top_idx--;
+
+                            }*/
+
+                            //free_node(new_node);
+                            ht_destroy(&table);
+                            //free_stack();
                             return;
                         }
-                        /*
-                        bool isDuplicate = false;
-                        for(int i=0;i<4;i++){
-                            rotateBoard(&new_node->state);
-                            if(ht_contains( &table, new_node->state.field )){
-                                isDuplicate = true;
-                                break;
-                            }
-                        }*/
 
                         if(!ht_contains( &table, new_node->state.field )){
-                            //if(!isDuplicate){
                             stack_push(new_node);
                             ht_insert( &table, new_node->state.field, new_node );
                         }
@@ -150,13 +168,30 @@ void find_solution( state_t* init_state  ){
             }
         }
 
+        if(isDead){
+            //free(n);
+        }
+
         if(expanded_nodes >= budget){
             return;
         }
 
-
-
     }
+    /*
+    ht_destroy(&table);
+    free_stack();*/
+}
 
+
+void free_node(node_t* node){
+    node_t* tmp;
+    int a=0;
+    assert(node!=NULL);
+    while( node != NULL ){
+        printf("%d\n",a++);
+        tmp = node;
+        node = node->parent;
+        free(tmp);
+    }
 
 }

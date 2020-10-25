@@ -13,5 +13,5 @@ void initialize_ai();
 
 void find_solution( state_t* init_state );
 void free_memory(unsigned expanded_nodes);
-
+void free_node(node_t* node);
 #endif

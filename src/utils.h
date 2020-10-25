@@ -70,6 +70,8 @@ bool ai_run; //Run AI
 bool show_solution; //Play solution found by AI algorithm
 int budget; // budget for expanded nodes
 
+node_t * all[10000000];
+int count_all;
 
 
 /**

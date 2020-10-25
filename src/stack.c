@@ -18,6 +18,7 @@ void stack_pop() {
 		printf("Error: No element to pop\n");
 		return;
 	}
+	stack[stack_top_idx] = NULL;
 	stack_top_idx--;
 }
 
