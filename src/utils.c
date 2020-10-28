@@ -345,6 +345,9 @@ void play_solution(){
 	}
 }
 
+
+
+
 void free_all_nodes(){
     for(int i=0; i < count_allocated_nodes; i++) {
         free(all_allocated_nodes[i]);

@@ -40,7 +40,7 @@ node_t* create_init_node( state_t* init_state ){
 	new_n->depth = 0;
 	copy_state(&(new_n->state), init_state);
 
-    all_allocated_nodes[count_allocated_nodes++] = new_n;
+    //all_allocated_nodes[count_allocated_nodes++] = new_n;
 
 	return new_n;
 }
@@ -84,7 +84,7 @@ void find_solution( state_t* init_state  ){
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-	node_t *ini_node = n;
+	//node_t *ini_node = n;
     node_t* new_node = NULL;
 
 	//FILL IN THE GRAPH ALGORITHM
@@ -95,7 +95,7 @@ void find_solution( state_t* init_state  ){
 
     // debug use.
     clock_t start = clock();
-
+    bool isDead;
     while (!is_stack_empty()){
         n = stack_top();
         stack_pop();
@@ -107,6 +107,7 @@ void find_solution( state_t* init_state  ){
             if(DEBUG){ printf(DEBUG_LOG); }
         }
 
+        isDead = true;
         position_s curPos;
         for(curPos.x=0;curPos.x<SIZE;curPos.x++){
             for(curPos.y=0;curPos.y<SIZE;curPos.y++){
@@ -117,7 +118,7 @@ void find_solution( state_t* init_state  ){
                 for(int jump=left;jump<=down;jump++){
 
                     if(can_apply(&n->state, &curPos, jump)){
-
+                        isDead = false;
                         new_node = applyAction(n, &curPos, jump);
                         generated_nodes++;
 
@@ -127,15 +128,20 @@ void find_solution( state_t* init_state  ){
 
                             if(DEBUG){ printf(DEBUG_LOG); }
 
-                            free(ini_node);
-                            free_all_nodes();
+                            free_node(new_node);
+                            //free(new_node);
+
+                            //free(ini_node);
+                            //free_all_nodes();
                             ht_destroy(&table);
+                            free_stack();
                             return;
                         }
 
+                        stack_push(new_node);
                         if(!ht_contains( &table, new_node->state.field )){
-                            stack_push(new_node);
-                            ht_insert( &table, new_node->state.field, new_node );
+
+                            ht_insert( &table, new_node->state.field, new_node->state.field );
                         }
 
                     }
@@ -145,13 +151,39 @@ void find_solution( state_t* init_state  ){
             }
         }
 
+        if(isDead){
+            node_t * tmp;
+            while(n!=stack_top()->parent){
+                tmp = n;
+                n = n->parent;
+                free(tmp);
+            }
+        }
+
+
         if(expanded_nodes >= budget){
+
+            free_node(n);
+            ht_destroy(&table);
+            free_stack();
             break;
         }
 
     }
 
-    free(ini_node);
-    free_all_nodes();
-    ht_destroy(&table);
+
+}
+
+
+void free_node(node_t* node){
+    node_t* tmp;
+    int a=0;
+    assert(node!=NULL);
+    while( node != NULL ){
+        printf("%d\n",a++);
+        tmp = node;
+        node = node->parent;
+        free(tmp);
+    }
+
 }
