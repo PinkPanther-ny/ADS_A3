@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <unistd.h>
 #include "utils.h"
+#include "utils.h"
+#include "hashtable.h"
+
 
 #define DEBUG 1
 #define DEBUG_LOG "Better solution found, %3d pegs remain, %7d node expanded (%f SECS).\n", \
@@ -12,6 +15,7 @@
 void initialize_ai();
 
 void find_solution( state_t* init_state );
-void free_memory(unsigned expanded_nodes);
-void free_node(node_t* node);
+void free_all_memory(node_t* main_branch, HashTable * table);
+
+void free_node(node_t* node, node_t* until_reach);
 #endif

@@ -1,8 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <math.h>
-#include <assert.h>
 
 #include "ai.h"
 #include "utils.h"
@@ -40,8 +38,6 @@ node_t* create_init_node( state_t* init_state ){
 	new_n->depth = 0;
 	copy_state(&(new_n->state), init_state);
 
-    //all_allocated_nodes[count_allocated_nodes++] = new_n;
-
 	return new_n;
 }
 
@@ -50,11 +46,7 @@ node_t* create_init_node( state_t* init_state ){
 */
 node_t* applyAction(node_t* n, position_s* selected_peg, move_t action ){
 
-    node_t* new_node = NULL;
-
-	//FILL IN MISSING CODE
-
-	new_node = create_init_node(&(n->state));
+    node_t* new_node = create_init_node(&(n->state));
 
     new_node->depth = n->depth + 1;
     new_node->parent = n;
@@ -80,23 +72,25 @@ void find_solution( state_t* init_state  ){
 	ht_setup( &table, sizeof(int8_t) * SIZE * SIZE, sizeof(int8_t) * SIZE * SIZE, 16769023);
 
 	// Initialize Stack
+    //DFS GRAPH ALGORITHM BY USING STACK
 	initialize_stack();
 
 	//Add the initial node
 	node_t* n = create_init_node( init_state );
-	//node_t *ini_node = n;
     node_t* new_node = NULL;
 
-	//FILL IN THE GRAPH ALGORITHM
     stack_push(n);
     ht_insert(&table, &n->state.field, n);
-
     int remainPeg = num_pegs(&n->state);
 
-    // debug use.
-    clock_t start = clock();
     bool isDead;
+    position_s curPos;
+
+    // Debug use
+    clock_t start = clock();
+
     while (!is_stack_empty()){
+
         n = stack_top();
         stack_pop();
         expanded_nodes++;
@@ -108,40 +102,36 @@ void find_solution( state_t* init_state  ){
         }
 
         isDead = true;
-        position_s curPos;
         for(curPos.x=0;curPos.x<SIZE;curPos.x++){
             for(curPos.y=0;curPos.y<SIZE;curPos.y++){
+
                 // Optimized checking condition, gain 17% more performance
                 if(n->state.field[ curPos.x ][ curPos.y ] !='o'){
                     continue;
                 }
                 for(int jump=left;jump<=down;jump++){
 
-                    if(can_apply(&n->state, &curPos, jump)){
-                        isDead = false;
+                    if( can_apply(&n->state, &curPos, jump) ){
                         new_node = applyAction(n, &curPos, jump);
                         generated_nodes++;
 
-                        if(won( &new_node->state )){
+                        if( won(&new_node->state) ){
                             remainPeg = num_pegs(&new_node->state);
                             save_solution(new_node);
+                            free_all_memory(new_node, &table);
 
                             if(DEBUG){ printf(DEBUG_LOG); }
-
-                            free_node(new_node);
-                            //free(new_node);
-
-                            //free(ini_node);
-                            //free_all_nodes();
-                            ht_destroy(&table);
-                            free_stack();
                             return;
                         }
 
-                        stack_push(new_node);
-                        if(!ht_contains( &table, new_node->state.field )){
+                        // Cutting unnecessary subtrees
+                        if( !ht_contains(&table, new_node->state.field) ){
 
+                            isDead = false;
+                            stack_push(new_node);
                             ht_insert( &table, new_node->state.field, new_node->state.field );
+                        }else{
+                            free(new_node);
                         }
 
                     }
@@ -151,36 +141,34 @@ void find_solution( state_t* init_state  ){
             }
         }
 
+
+        // Free dead tree branches, until reach the upper parent node
         if(isDead){
-            node_t * tmp;
-            while(n!=stack_top()->parent){
-                tmp = n;
-                n = n->parent;
-                free(tmp);
-            }
+            free_node(n, stack_top()->parent);
         }
 
-
+        // Game over, free and exit
         if(expanded_nodes >= budget){
-
-            free_node(n);
-            ht_destroy(&table);
-            free_stack();
-            break;
+            free_all_memory(n, &table);
+            return;
         }
 
     }
 
+}
+
+// Summarize all free tasks
+void free_all_memory(node_t* main_branch, HashTable * table){
+    free_node(main_branch, NULL);
+    ht_destroy(table);
+    free_stack();
 
 }
 
-
-void free_node(node_t* node){
+// Free a node and its parents, until reach given node
+void free_node(node_t* node, node_t* until_reach){
     node_t* tmp;
-    int a=0;
-    assert(node!=NULL);
-    while( node != NULL ){
-        printf("%d\n",a++);
+    while( node != until_reach ){
         tmp = node;
         node = node->parent;
         free(tmp);
