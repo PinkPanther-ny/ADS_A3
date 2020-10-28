@@ -28,8 +28,6 @@ void save_solution( node_t* solution_node ){
 	while( n->parent != NULL ){
 		copy_state( &(solution[n->depth]), &(n->state) );
 		solution_moves[n->depth-1] = n->move;
-
-		//free state before go to parent
 		n = n->parent;
 	}
 	solution_size = solution_node->depth;
@@ -73,17 +71,13 @@ node_t* applyAction(node_t* n, position_s* selected_peg, move_t action ){
 /**
  * Find a solution path as per algorithm description in the handout
  */
-
 void find_solution( state_t* init_state  ){
 
 	HashTable table;
 
-
-
 	// Choose initial capacity of PRIME NUMBER 
 	// Specify the size of the keys and values you want to store once 
 	ht_setup( &table, sizeof(int8_t) * SIZE * SIZE, sizeof(int8_t) * SIZE * SIZE, 16769023);
-
 
 	// Initialize Stack
 	initialize_stack();
@@ -92,20 +86,16 @@ void find_solution( state_t* init_state  ){
 	node_t* n = create_init_node( init_state );
 	node_t *ini_node = n;
     node_t* new_node = NULL;
-    count_allocated_nodes = 0;
-	//FILL IN THE GRAPH ALGORITHM
 
-    /* stackPush(n) */
+	//FILL IN THE GRAPH ALGORITHM
     stack_push(n);
     ht_insert(&table, &n->state.field, n);
 
-    /* remainingPegs ← numPegs(n) */
     int remainPeg = num_pegs(&n->state);
 
     // debug use.
     clock_t start = clock();
 
-    /* while stack != empty do */
     while (!is_stack_empty()){
         n = stack_top();
         stack_pop();
@@ -118,7 +108,6 @@ void find_solution( state_t* init_state  ){
         }
 
         position_s curPos;
-        bool isDead = true;
         for(curPos.x=0;curPos.x<SIZE;curPos.x++){
             for(curPos.y=0;curPos.y<SIZE;curPos.y++){
                 // Optimized checking condition, gain 17% more performance
@@ -128,7 +117,7 @@ void find_solution( state_t* init_state  ){
                 for(int jump=left;jump<=down;jump++){
 
                     if(can_apply(&n->state, &curPos, jump)){
-                        isDead = false;
+
                         new_node = applyAction(n, &curPos, jump);
                         generated_nodes++;
 
@@ -136,21 +125,11 @@ void find_solution( state_t* init_state  ){
                             remainPeg = num_pegs(&new_node->state);
                             save_solution(new_node);
 
-                            // Game over
                             if(DEBUG){ printf(DEBUG_LOG); }
 
                             free(ini_node);
                             free_all_nodes();
-                            /*
-                            while (!is_stack_empty()){
-                                free(stack_top());
-                                stack_top_idx--;
-
-                            }*/
-
-                            //free_node(new_node);
                             ht_destroy(&table);
-                            //free_stack();
                             return;
                         }
 
@@ -165,10 +144,6 @@ void find_solution( state_t* init_state  ){
 
             }
         }
-        /*
-        if(isDead){
-            //free(n);
-        }*/
 
         if(expanded_nodes >= budget){
             break;
@@ -176,21 +151,7 @@ void find_solution( state_t* init_state  ){
 
     }
 
-
     free(ini_node);
     free_all_nodes();
     ht_destroy(&table);
 }
-
-/*
-void free_node(node_t* node){
-    node_t* tmp;
-    int a=0;
-    assert(node!=NULL);
-    while( node != NULL ){
-        printf("%d\n",a++);
-        tmp = node;
-        node = node->parent;
-        free(tmp);
-    }
-}*/

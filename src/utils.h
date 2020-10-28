@@ -109,7 +109,7 @@ void print_solution();
 void play_solution();
 
 
-#define MAX_EXPENDED_NODES 5000000
+#define MAX_EXPENDED_NODES 6000000
 node_t * all_allocated_nodes[MAX_EXPENDED_NODES];
 int count_allocated_nodes;
 void free_all_nodes();

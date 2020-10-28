@@ -99,6 +99,8 @@ int main(int argc, char *argv[]) {
 		expanded_nodes = 0;
 		solution_size = 0;
 
+        count_allocated_nodes = 0;
+
 		clock_t start = clock();
 
 		// AI ALGORITHM CALL
