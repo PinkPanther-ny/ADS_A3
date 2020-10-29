@@ -103,18 +103,19 @@ int main(int argc, char *argv[]) {
 
 		clock_t start = clock();
 
-
         // AI ALGORITHM CALL
         find_solution( board );
 
         clock_t end = clock();
-         double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-
+        double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
         if( show_solution ) play_solution();
 
+        printf("SOLUTION:                               \n");
+        print_solution( );
 
-        char * fn="/home/alvin/Desktop/myRepo/ADS_A3/output.txt";
+
+        char * fn="output.txt";
         FILE * fp = fopen(fn, "w+");
         assert(fp!=NULL);
         fprintf(fp, "STATS OF LAYOUT %d: \n", layout);
@@ -124,10 +125,6 @@ int main(int argc, char *argv[]) {
         fprintf(fp, "\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
         fprintf(fp, "\tTime (seconds): %f\n", cpu_time_used );
         fclose(fp);
-
-
-        printf("SOLUTION:                               \n");
-        print_solution( );
 
         printf("STATS: \n");
         printf("\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
