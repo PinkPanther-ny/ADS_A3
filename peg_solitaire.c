@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
         if( show_solution ) play_solution();
 
 
-        char * fn="/home/alvin/Desktop/myRepo/ADS_A3/output.txt";
+        char * fn="output.txt";
         FILE * fp = fopen(fn, "w+");
         assert(fp!=NULL);
         fprintf(fp, "STATS OF LAYOUT %d: \n", layout);
