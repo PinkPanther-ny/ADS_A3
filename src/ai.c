@@ -101,14 +101,10 @@ void find_solution( state_t* init_state  ){
             if(DEBUG){ printf(DEBUG_LOG); }
         }
 
+        // If no action can be taken at current board, it's a dead branch
         isDead = true;
         for(curPos.x=0;curPos.x<SIZE;curPos.x++){
             for(curPos.y=0;curPos.y<SIZE;curPos.y++){
-
-                // Optimized checking condition, gain 17% more performance
-                if(n->state.field[ curPos.x ][ curPos.y ] !='o'){
-                    continue;
-                }
                 for(int jump=left;jump<=down;jump++){
 
                     if( can_apply(&n->state, &curPos, jump) ){
@@ -118,29 +114,26 @@ void find_solution( state_t* init_state  ){
                         if( won(&new_node->state) ){
                             remainPeg = num_pegs(&new_node->state);
                             save_solution(new_node);
-                            free_all_memory(new_node, &table);
-
                             if(DEBUG){ printf(DEBUG_LOG); }
+
+                            free_all_memory(new_node, &table);
                             return;
                         }
 
                         // Cutting unnecessary subtrees
-                        if( !ht_contains(&table, new_node->state.field) ){
+                        if( is_seen_first_time(&table, new_node) ){
 
                             isDead = false;
                             stack_push(new_node);
-                            ht_insert( &table, new_node->state.field, new_node->state.field );
+                            ht_insert( &table, &new_node->state.field, &new_node->state.field );
                         }else{
                             free(new_node);
                         }
-
                     }
 
                 }
-
             }
         }
-
 
         // Free dead tree branches, until reach the upper parent node
         if(isDead){
@@ -155,6 +148,11 @@ void find_solution( state_t* init_state  ){
 
     }
 
+}
+
+// First see the board of the node in the given hashTable
+bool is_seen_first_time(HashTable * hashTable, node_t * node){
+    return !ht_contains(hashTable, &(node->state.field));
 }
 
 // Summarize all free tasks

@@ -103,39 +103,41 @@ int main(int argc, char *argv[]) {
 
 		clock_t start = clock();
 
-		// AI ALGORITHM CALL
-		find_solution( board );
 
-		clock_t end = clock();
-     	double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        // AI ALGORITHM CALL
+        find_solution( board );
 
-			
-		if( show_solution ) play_solution();
-/*
+        clock_t end = clock();
+         double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+
+        if( show_solution ) play_solution();
+
+
         char * fn="/home/alvin/Desktop/myRepo/ADS_A3/output.txt";
         FILE * fp = fopen(fn, "w+");
         assert(fp!=NULL);
-        fprintf(fp, "STATS: \n");
+        fprintf(fp, "STATS OF LAYOUT %d: \n", layout);
         fprintf(fp, "\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
         fprintf(fp, "\tSolution Length: %d\n", solution_size);
         fprintf(fp, "\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
         fprintf(fp, "\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
         fprintf(fp, "\tTime (seconds): %f\n", cpu_time_used );
         fclose(fp);
-*/
-		printf("SOLUTION:                               \n");
-		print_solution( );
 
-		printf("STATS: \n");
-		printf("\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
-		printf("\tSolution Length: %d\n", solution_size);
-		printf("\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
-		printf("\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
-		printf("\tTime (seconds): %f\n", cpu_time_used );
 
-		setBufferedInput(true);
-		printf("\033[?25h\033[0m");
+        printf("SOLUTION:                               \n");
+        print_solution( );
 
+        printf("STATS: \n");
+        printf("\tExpanded nodes: %'d\n\tGenerated nodes: %'d\n", expanded_nodes, generated_nodes);
+        printf("\tSolution Length: %d\n", solution_size);
+        printf("\tNumber of Pegs Left: %d\n", num_pegs( &(solution[solution_size]) ) );
+        printf("\tExpanded/seconds: %d\n", (int)(expanded_nodes/cpu_time_used) );
+        printf("\tTime (seconds): %f\n", cpu_time_used );
+
+        setBufferedInput(true);
+        printf("\033[?25h\033[0m");
 
 		return EXIT_SUCCESS;
 	}else{

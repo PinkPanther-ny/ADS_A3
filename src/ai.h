@@ -18,4 +18,5 @@ void find_solution( state_t* init_state );
 void free_all_memory(node_t* main_branch, HashTable * table);
 
 void free_node(node_t* node, node_t* until_reach);
+bool is_seen_first_time(HashTable * table, node_t * node);
 #endif
