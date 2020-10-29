@@ -88,7 +88,7 @@ void find_solution( state_t* init_state  ){
 
     // Debug use
     clock_t start = clock();
-
+    printf("\n");
     while (!is_stack_empty()){
 
         n = stack_top();

@@ -9,7 +9,7 @@
 
 
 #define DEBUG 1
-#define DEBUG_LOG "Better solution found, %3d pegs remain, %7d node expanded (%f SECS).\n", \
+#define DEBUG_LOG "Better solution found, %3d pegs remain, %12d node expanded (%f SECS).\n", \
                     remainPeg, expanded_nodes, (double)(clock()-start)/CLOCKS_PER_SEC
 
 void initialize_ai();
