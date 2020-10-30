@@ -5,23 +5,21 @@ CFLAGS=-Wall -g  -O3 -std=gnu99
 
 SRC=src/utils.o src/hashtable.o src/stack.o src/ai.o  peg_solitaire.o
 TARGET=pegsol
-LEVEL=2
+LEVEL=5
 BUDGET = 1200000
-RUN_ARGS=$(LEVEL) AI $(BUDGET) #play_solution
+RUN_ARGS=$(LEVEL) AI $(BUDGET)
 
 VALGRIND = valgrind
 VALGRIND_FLAG = --leak-check=full --show-leak-kinds=all --read-var-info=yes --track-origins=yes --tool=memcheck
 VALGRIND_ARGS=$(LEVEL) AI $(BUDGET)
 
 
-all: build run clean
+all: build #run clean
 
 build: $(SRC)
-	clear
 	$(CC) -o $(TARGET) $(SRC) $(CPPFLAGS)
-	wait
 
-run:
+run:build
 	./$(TARGET) $(RUN_ARGS)
 
 clean:
