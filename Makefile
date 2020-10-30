@@ -17,7 +17,9 @@ VALGRIND_ARGS=$(LEVEL) AI $(BUDGET)
 all: build run clean
 
 build: $(SRC)
+	clear
 	$(CC) -o $(TARGET) $(SRC) $(CPPFLAGS)
+	wait
 
 run:
 	./$(TARGET) $(RUN_ARGS)
