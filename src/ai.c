@@ -135,16 +135,17 @@ void find_solution( state_t* init_state  ){
             }
         }
 
-        // Free dead tree branches, until reach the upper parent node
-        if(isDead){
-            free_node(n, stack_top()->parent);
-        }
-
         // Game over, free and exit
         if(expanded_nodes >= budget){
             free_all_memory(n, &table);
             return;
         }
+
+        // Free dead tree branches, until reach the upper parent node
+        if(isDead){
+            free_node(n, stack_top()->parent);
+        }
+
 
     }
 

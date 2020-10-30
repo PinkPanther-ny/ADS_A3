@@ -114,7 +114,6 @@ int main(int argc, char *argv[]) {
         printf("SOLUTION:                               \n");
         print_solution( );
 
-
         char * fn="output.txt";
         FILE * fp = fopen(fn, "w+");
         assert(fp!=NULL);

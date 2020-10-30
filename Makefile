@@ -7,7 +7,7 @@ SRC=src/utils.o src/hashtable.o src/stack.o src/ai.o  peg_solitaire.o
 TARGET=pegsol
 LEVEL=2
 BUDGET = 1200000
-RUN_ARGS=$(LEVEL) AI $(BUDGET) play_solution
+RUN_ARGS=$(LEVEL) AI $(BUDGET) #play_solution
 
 VALGRIND = valgrind
 VALGRIND_FLAG = --leak-check=full --show-leak-kinds=all --read-var-info=yes --track-origins=yes --tool=memcheck
